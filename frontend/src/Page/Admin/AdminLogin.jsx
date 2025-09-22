@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({
@@ -6,6 +8,38 @@ const AdminLogin = () => {
     password: '',
   });
   const [error, setError] = useState('');
+
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+
+    console.log(formData);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:3000/api/auth/login', formData, {
+        withCredentials: true,
+      });
+
+      if (response.data.user) {
+        navigate('/admin/posts');
+      }
+    } catch (error) {
+      const errorMessage = error.response.data.message || '로그인에 실패했습니다.';
+      const remainingAttempts = error.response.data.remainingAttempts;
+
+      setError({
+        message: errorMessage,
+        remainingAttempts: remainingAttempts,
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center px-4">
@@ -15,7 +49,7 @@ const AdminLogin = () => {
           <p className="mt-2 text-center text-lg text-gray-600">관리자 전용 페이지입니다.</p>
         </div>
 
-        <form className="mt-8 space-y-6">
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
               <label htmlFor="username" className="block text-xm font-medium text-gray-700">
@@ -26,6 +60,8 @@ const AdminLogin = () => {
                 name="username"
                 type="text"
                 required
+                value={formData.username}
+                onChange={handleChange}
                 className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 placeholder="관리자 아이디"
               />
@@ -39,6 +75,8 @@ const AdminLogin = () => {
                 name="password"
                 type="password"
                 required
+                value={formData.password}
+                onChange={handleChange}
                 className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 placeholder="관리자 비밀번호"
               />
