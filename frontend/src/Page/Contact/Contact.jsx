@@ -1,6 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+    status: 'in progress',
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:3000/api/contact', formData);
+
+      if (response.status === 201) {
+        alert('문의가 성공적으로 접수되었습니다.');
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          message: '',
+          status: 'in progress',
+        });
+      }
+    } catch (error) {
+      console.log('에러 발생: ', error);
+      alert('문의 접수 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white py-32">
       <div className="container mx-auto px-4 max-w-6xl">
@@ -10,44 +47,55 @@ const Contact = () => {
             태양광 설비 설치부터 유지보수까지, 전문가와 상담하세요. 24시간 내에 답변드리겠습니다.
           </p>
         </div>
-
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           <div>
-            <form className="bg-white rounded-2xl shadow-xl p-8">
+            <form className="bg-white rounded-2xl shadow-xl p-8" onSubmit={handleSubmit}>
               <div className="space-y-6">
                 <div>
                   <label className="block text-gray-700 font-medium mb-2">이름</label>
                   <input
                     type="text"
+                    name="name"
                     className="w-full p-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors duration-300"
                     placeholder="홍길동"
                     required
+                    value={formData.name}
+                    onChange={handleChange}
                   />
                 </div>
                 <div>
                   <label className="block text-gray-700 font-medium mb-2">이메일</label>
                   <input
                     type="email"
+                    name="email"
                     className="w-full p-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors duration-300"
                     placeholder="example@example.com"
                     required
+                    value={formData.email}
+                    onChange={handleChange}
                   />
                 </div>
                 <div>
                   <label className="block text-gray-700 font-medium mb-2">전화번호</label>
                   <input
                     type="tel"
+                    name="phone"
                     className="w-full p-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors duration-300"
                     placeholder="010-1234-5678"
                     required
+                    value={formData.phone}
+                    onChange={handleChange}
                   />
                 </div>
                 <div>
                   <label className="block text-gray-700 font-medium mb-2">문의 내용</label>
                   <textarea
+                    name="message"
                     className="w-full p-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors duration-300 h-40"
                     placeholder="문의하실 내용을 자세히 적어주세요."
                     required
+                    value={formData.message}
+                    onChange={handleChange}
                   />
                 </div>
                 <button className="w-full bg-blue-600 text-white py-4 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-300">
@@ -62,9 +110,21 @@ const Contact = () => {
               <h3 className="text-2xl font-bold text-gray-800 mb-6">연락처 정보</h3>
               <div className="space-y-6">
                 {[
-                  { icon: 'phone', title: '전화', info: '02-1234-5678', desc: '평일 09:00 - 18:00' },
-                  { icon: 'envelope', title: '이메일', info: 'support@example.com', desc: '24시간 접수 가능' },
-                  { icon: 'map-marker-alt', title: '주소', info: '서울특별시 강남구 삼성동 123번지', desc: '본사' },
+                  {
+                    title: '전화',
+                    info: '02-1234-5678',
+                    desc: '평일 09:00 - 18:00',
+                  },
+                  {
+                    title: '이메일',
+                    info: 'support@example.com',
+                    desc: '24시간 접수 가능',
+                  },
+                  {
+                    title: '주소',
+                    info: '서울특별시 강남구 삼성동 123번지',
+                    desc: '본사',
+                  },
                 ].map((item, index) => (
                   <div key={index} className="flex items-start">
                     <div className="ml-4">
@@ -79,7 +139,7 @@ const Contact = () => {
 
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3162.2644960515754!2d126.9769117!3d37.572389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca2eb421c44ad%3A0xe955a50c118085f8!2z6rSR7ZmU66y46rSR7J6l!5e0!3m2!1sko!2skr!4v1758469502528!5m2!1sko!2skr"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3162.279301018033!2d126.9754847612344!3d37.572040327749015!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca2eb421c44ad%3A0xe955a50c118085f8!2sGwanghwamun%20Square!5e0!3m2!1sen!2skr!4v1735115389923!5m2!1sen!2skr"
                 width="100%"
                 height="400"
                 allowfullscreen=""
