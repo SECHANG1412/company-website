@@ -1,0 +1,52 @@
+const mogoose = require('mongoose');
+
+const postSchema = new mogoose.Schema(
+  {
+    number: {
+      type: Number,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    content: {
+      type: String,
+      required: true,
+    },
+    fileUrl: {
+      type: [String],
+      trim: true,
+    },
+    views: {
+      tyep: Number,
+      default: 0,
+    },
+    viewLogs: [
+      {
+        ip: String,
+        userAgent: String,
+        timestamp: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const Post = mogoose.model('Post', postSchema);
+
+module.exports = Post;
