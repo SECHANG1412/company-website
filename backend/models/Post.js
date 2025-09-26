@@ -20,7 +20,7 @@ const postSchema = new mogoose.Schema(
       trim: true,
     },
     views: {
-      tyep: Number,
+      type: Number,
       default: 0,
     },
     viewLogs: [
