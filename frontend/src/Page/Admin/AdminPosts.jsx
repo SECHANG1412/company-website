@@ -66,6 +66,7 @@ const AdminPosts = () => {
             />
           </div>
         </div>
+
         <a
           href="/admin/create-post"
           className="w-full md:w-auto bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-center"
@@ -98,14 +99,14 @@ const AdminPosts = () => {
         <table className="w-full bg-white shadow-md rounded-lg overflow-hidden text-sm lg:text-base font-bold">
           <thead className="bg-gray-100">
             <tr>
-              <th className="px-4 py-3 text-left">번호</th>
-              <th className="px-4 py-3 text-left">제목</th>
-              <th className="px-4 py-3 text-left">내용</th>
-              <th className="px-4 py-3 text-left">조회수</th>
-              <th className="px-4 py-3 text-center">파일</th>
-              <th className="px-4 py-3 text-left">작성일</th>
-              <th className="px-4 py-3 text-left">수정일</th>
-              <th className="px-4 py-3 text-center">관리</th>
+              <th className="px-4 py-3 text-left w-[8%]">번호</th>
+              <th className="px-4 py-3 text-left w-[15%]">제목</th>
+              <th className="px-4 py-3 text-left w-[30%]">내용</th>
+              <th className="px-4 py-3 text-left w-[7%]">조회수</th>
+              <th className="px-4 py-3 text-left w-[10%]">파일</th>
+              <th className="px-4 py-3 text-left w-[12%]">작성일</th>
+              <th className="px-4 py-3 text-left w-[12%]">수정일</th>
+              <th className="px-4 py-3 text-left w-[6%]">관리</th>
             </tr>
           </thead>
           <tbody>
@@ -120,7 +121,9 @@ const AdminPosts = () => {
                 <tr key={post._id} className="border-b">
                   <td className="px-4 py-3">{(currentPage - 1) * pageSize + index + 1}</td>
                   <td className="px-4 py-3 overflow-hidden overflow-ellipsis whitespace-nowrap">{post.title}</td>
-                  <td className="px-4 py-3 overflow-hidden overflow-ellipsis whitespace-nowrap">{post.content}</td>
+                  <td className="px-4 py-3 overflow-hidden text-ellipsis whitespace-nowrap">
+                    {post.content.length > 25 ? `${post.content.substring(0, 25)}...` : post.content}
+                  </td>
                   <td className="px-4 py-3">{post.views}</td>
                   <td className="px-4 py-3">
                     {Array.isArray(post.fileUrl) ? (
@@ -171,7 +174,10 @@ const AdminPosts = () => {
                   <td className="px-4 py-3">{new Date(post.updatedAt).toLocaleString()}</td>
                   <td className="px-4 py-3">
                     <div className="flex justify-end space-x-2">
-                      <button className="px-3 py-1.5 bg-blue-500 text-white rounded hover:bg-blue-600 whitespace-nowrap writing-normal">
+                      <button
+                        className="px-3 py-1.5 bg-blue-500 text-white rounded hover:bg-blue-600 whitespace-nowrap writing-normal"
+                        onClick={() => (window.location.href = `/admin/edit-post/${post._id}`)}
+                      >
                         수정
                       </button>
                       <button className="px-3 py-1.5 bg-red-500 text-white rounded hover:bg-red-600 whitespace-nowrap writing-normal">
