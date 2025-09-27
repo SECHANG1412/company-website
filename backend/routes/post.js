@@ -188,7 +188,7 @@ router.delete('/:id', async (req, res) => {
       }
     };
 
-    const allFiles = [...deletedImages, ...(post.fileUrl || [])];
+    const allFiles = [...contentImages, ...(post.fileUrl || [])];
 
     for (const fileUrl of allFiles) {
       const key = getS3KeyFromUrl(fileUrl);
