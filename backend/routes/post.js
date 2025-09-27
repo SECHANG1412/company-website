@@ -1,4 +1,4 @@
-const { S3Client, DeleteObjectCommand } = require("@aws-sdk/client-s3");
+const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
