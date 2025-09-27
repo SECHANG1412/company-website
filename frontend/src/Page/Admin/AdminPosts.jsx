@@ -75,7 +75,7 @@ const AdminPosts = () => {
       </div>
 
       <div className="mb-4 flex justify-between items-center">
-        <div className="text-lg font-bold text-gray-600">총 0개의 게시물</div>
+        <div className="text-lg font-bold text-gray-600">총 {paginatedPosts.length}개의 게시물</div>
 
         <div className="flex items-center space-x-2">
           <label className="text-base font-bold text-gray-600">페이지당 표시: </label>
