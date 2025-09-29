@@ -22,6 +22,7 @@ router.post('/signup', async (req, res) => {
     });
 
     await user.save();
+    console.log("회원가입이 완료되었습니다.", user);
     res.status(201).json({ message: '회원가입이 완료되었습니다.' });
   } catch (error) {
     res.status(500).json({ message: '서버 오류가 발생했습니다.' });
@@ -68,13 +69,13 @@ router.post('/login', async (req, res) => {
     user.lastLoginAttempt = new Date();
     user.isLoggedIn = true;
 
-    try {
-      const response = await axios.get('https://api.ipify.org?format=json');
-      const ipAddress = response.data.ip;
-      user.ipAddress = ipAddress;
-    } catch (error) {
-      console.log('IP 주소를 가져오던 중 오류 발생:', error.message);
-    }
+    // try {
+    //   const response = await axios.get('https://api.ipify.org?format=json');
+    //   const ipAddress = response.data.ip;
+    //   user.ipAddress = ipAddress;
+    // } catch (error) {
+    //   console.log('IP 주소를 가져오던 중 오류 발생:', error.message);
+    // }
 
     await user.save();
 

@@ -12,6 +12,7 @@ import MainPage from './Page/MainPage/MainPage';
 import About from './Page/About/About';
 import Leadership from './Page/Leadership/Leadership';
 import Board from './Page/Board/Board';
+import SinglePost from './Page/SinglePost/SinglePost';
 import Services from './Page/Services/Services';
 import Contact from './Page/Contact/Contact';
 
@@ -109,6 +110,10 @@ const router = createBrowserRouter([
       {
         path: '/board',
         element: <Board />,
+      },
+      {
+        path: '/post/:id',
+        element: <SinglePost />,
       },
       {
         path: '/our-services',

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Board = () => {
   const [posts, setPosts] = useState([]);
@@ -9,6 +10,8 @@ const Board = () => {
   const [searchType, setSearchType] = useState('title');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -134,7 +137,13 @@ const Board = () => {
               </tr>
             ) : (
               paginatedPosts.map((post, index) => (
-                <tr key={post._id} className="hover:bg-gray-50 cursor-pointer">
+                <tr
+                  onClick={() => {
+                    navigate(`/post/${post._id}`);
+                  }}
+                  key={post._id}
+                  className="hover:bg-gray-50 cursor-pointer"
+                >
                   <td className="px-6 py-4 whitespace-nowrap">{(currentPage - 1) * pageSize + index + 1}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{post.title}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{new Date(post.createdAt).toLocaleDateString()}</td>
@@ -144,6 +153,49 @@ const Board = () => {
             )}
           </tbody>
         </table>
+      </div>
+
+      <div className="md:hidden grid grid-cols-1 gap-4">
+        {paginatedPosts.length === 0 ? (
+          <div className="col-span-full text-center text-gray-500">게시글이 없습니다.</div>
+        ) : (
+          paginatedPosts.map((post, index) => (
+            <div
+              key={post._id}
+              onClick={() => {
+                navigate(`/post/${post._id}`);
+              }}
+              className="border rounded-lg p-4 bg-white shadow-md hover:shadow-lg transition-shadow"
+            >
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="text-lg font-bold truncate">{post.title}</h3>
+                <span className="text-sm text-gray-500">#{(currentPage - 1) * pageSize + index + 1}</span>
+              </div>
+              <p className="text-sm text-gray-600 mb-3 truncate">
+                작성일: {new Date(post.createdAt).toLocaleDateString()}
+              </p>
+              <p className="text-sm text-gray-600">조회수: {post.views}</p>
+            </div>
+          ))
+        )}
+      </div>
+
+      <div className="mt-4 flex justify-center space-x-2 text-lg font-bold">
+        <button
+          className="px-3 py-1 rounded border disabled:opacity-50"
+          onClick={() => setCurrentPage((p) => p - 1)}
+          disabled={currentPage === 1 || totalPages === 0}
+        >
+          이전
+        </button>
+        <span className="px-3 py-1">{totalPages > 0 ? `${currentPage} / ${totalPages}` : '0 / 0'}</span>
+        <button
+          className="px-3 py-1 rounded border disabled:opacity-50"
+          onClick={() => setCurrentPage((p) => p + 1)}
+          disabled={currentPage >= totalPages || totalPages === 0}
+        >
+          다음
+        </button>
       </div>
     </div>
   );

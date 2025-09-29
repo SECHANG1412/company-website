@@ -1,6 +1,6 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 
 const Forum = () => {
   const [posts, setPosts] = useState([]);
@@ -51,18 +51,18 @@ const Forum = () => {
           {loading ? (
             <div className="p-6 text-center text-gray-500">로딩 중...</div>
           ) : posts.length === 0 ? (
-            <div className="p-6 text-center text-gray-500"> 최근 게시물이 없습니다.</div>
+            <div className="p-6 text-center text-gray-500">최근 게시물이 없습니다.</div>
           ) : (
             posts.map((post) => (
               <div
                 key={post._id}
                 className="border-b border-gray-100 last:border-b-0 hover:bg-blue-50 transition-colors duration-300"
               >
-                <Link to={`/board/${post._id}`} className="block">
+                <Link to={`/post/${post._id}`} className="block">
                   <div className="p-6 flex items-center justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-4 mb-2">
-                        <span className="text-gray-500 text-sm">No.{post.number}</span>
+                        <span className="text-gray-500 text-sm">No. {post.number}</span>
                         <span className="text-gray-500 text-sm">조회수: {post.views}</span>
                         {post.fileUrl.length > 0 && (
                           <span className="text-gray-500 text-sm">파일: {post.fileUrl.length}</span>
